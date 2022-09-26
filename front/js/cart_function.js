@@ -1,26 +1,3 @@
-// Récupération des éléments du cache
-function retrieveItemsFromCache(){
-    const numberOfItems = localStorage.length
-   for (let i = 0; i < numberOfItems; i++) {
-    const item = localStorage.getItem(localStorage.key(i)) || ""
-    const itemObject = JSON.parse(item)
-    cart.push(itemObject)
-   };
-};
-
-// Quantité totale de l'affichage
-function displayTotalQuantity() {
-    const totalQuantity = document.querySelector("#totalQuantity")
-    const total = cart.reduce((total, item) => total + item.quantity, 0)
-    totalQuantity.textContent = total
-};
-
-// Prix totale de l'affichage 
-function displayTotalPrice(){
-    const totalPrice = document.querySelector("#totalPrice")
-    const total = cart.reduce((total, item) => total + item.price * item.quantity, 0)
-    totalPrice.textContent = total
-};
 
 // Supprimer l'article de la page
 function deleteArticleFromPage(item){
@@ -109,15 +86,10 @@ function isFormFilled(){
 
 // Obtenir des identifiants à partir du cache
 function getIdsFromCache(){
-    const numberOfProducts = localStorage.length
-    const ids = []
-    for (let i = 0; i < numberOfProducts; i++){
-        const key = localStorage.key(i)
-        const id = key.split("-")[0]
-        ids.push(id)
-    }
-    return ids
+    const cart = JSON.parse(localStorage.getItem('cart'));
+    const ids = cart.map(product => product.id);
+    return Array.from(new Set(ids));
 };
 
-export {deleteArticleFromPage, deleteDataFromCache, saveNewDataToCache, 
+export {deleteArticleFromPage, deleteDataFromCache, 
 makeDescription, displayArticle, makeArticle, makeImageDiv, isFormFilled, getIdsFromCache};

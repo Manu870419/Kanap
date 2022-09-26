@@ -1,4 +1,3 @@
-//import {makeImage, makeTitle, makePrice, makeCartContent, makeColors, saveOrder, isOrderInValid, redirectToCart} from "./product_function.js"
 // Récupération de l'id depuis l'url
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString)
@@ -94,17 +93,27 @@ function isOrderInValid(color, quantity) {
 };
 
 function saveOrder(color, quantity) {
-  const cart= `${id}`
-  const data = {
+  const cart= JSON.parse(localStorage.getItem('cart'));
+
+  const newProduct = {
     id: id,
     color: color,
     quantity: Number(quantity),
-    price: itemPrice,
-    imageUrl: imgUrl,
     altTxt: altText,
     name: articleName
   };
-  localStorage.setItem(cart, JSON.stringify(data))
+ //Si le produit est déjà dans le panier (même id et même couleur)
+ if (cart.some(product => product.id === newProduct.id && product.color === newProduct)){
+  cart.map(product => {
+    if (product.id === newProduct.id && product.color === newProduct.color) {
+      return product.quantity += newProduct.quantity
+    }
+  })
+ } else {
+  cart.push(newProduct)
+ }
+
+  localStorage.setItem(cart, JSON.stringify(cart))
 };
 
 function redirectToCart() {

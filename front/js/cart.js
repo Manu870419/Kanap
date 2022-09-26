@@ -1,22 +1,14 @@
-import {deleteArticleFromPage, deleteDataFromCache, saveNewDataToCache, 
+import {deleteArticleFromPage, deleteDataFromCache, 
     makeDescription, displayArticle, makeArticle, makeImageDiv, isFormFilled, getIdsFromCache} from "./cart_function.js"
-const cart = [];
 
-// Récupération des éléments du cache
-retrieveItemsFromCache()
-cart.forEach((item) => displayItem(item))
+ let cart = JSON.parse(localStorage.getItem('cart'));
+
+ cart.forEach((item) => displayItem(item))
+ 
+ getIdsFromCache()
 
 const orderButton = document.querySelector("#order")
 orderButton.addEventListener("click", (e) => submitForm(e))
-
-function retrieveItemsFromCache(){
-    const numberOfItems = localStorage.length
-   for (let i = 0; i < numberOfItems; i++) {
-    const item = localStorage.getItem(localStorage.key(i)) || ""
-    const itemObject = JSON.parse(item)
-    cart.push(itemObject)
-   };
-};
 
 // Affichage de l'article ou des articles
 function displayItem(item) {
@@ -79,8 +71,8 @@ function addDeleteToSettings(settings, item) {
 
 // Supprimer l'élément
  function deleteItem(item){
-    const itemToDelete = cart.findIndex((product) => product.id === item.id && product.color === item.color)
-    cart.splice(itemToDelete, 1)
+    cart = cart.filter(product => product.id !== item.id || product.color !== item.color);
+    localStorage.setItem('cart', JSON.stringify('cart'))
     displayTotalPrice()
     displayTotalQuantity()
     deleteDataFromCache(item)
@@ -101,21 +93,24 @@ function addQuantityToSettings(settings, item){
     input.min = "1"
     input.max = "100"
     input.value = item.quantity
-    input.addEventListener("input", () => updatePriceAndQuantity(item.id, input.value, item))
+    input.addEventListener("input", () => updatePriceAndQuantity(item, input.value))
 
     quantity.appendChild(input)
     settings.appendChild(quantity)
 }
 
 // Mettre à jour le prix et la quantité
-function updatePriceAndQuantity(id, newValue, item) {
-    const itemToUpdate = cart.find((item) => item.id === id)
-    itemToUpdate.quantity = Number(newValue)
-    item.quantity = itemToUpdate.quantity
+function updatePriceAndQuantity(newValue, item) {
+    cart.map(product => {
+        if (product.id === item.id && product.color === item.color) {
+            return product.quantity = Number(newValue)
+        };
+    });
     displayTotalQuantity()
     displayTotalPrice()
-    saveNewDataToCache(item)
-}
+    
+    localStorage.setItem('cart', JSON.stringify(cart))
+};
 
 // Formulaire
 function submitForm(e){

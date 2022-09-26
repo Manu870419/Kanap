@@ -1,5 +1,11 @@
 import {makeAnchor, makeImage, makeH3, makeParagraph, appendElementsToArticle, appendItems} from "./index_function.js"
 
+// Je crée un panier vide s'il n'existe pas dans le localstorage
+if (!localStorage.getItem('cart')) {
+  localStorage.setItem('cart', JSON.stringify([]))
+  console.log(localStorage.getItem('cart'));
+};
+
 // Récupération données de l'API.
 fetch("http://localhost:3000/api/products")
   .then ((res) => res.json())
@@ -8,12 +14,6 @@ fetch("http://localhost:3000/api/products")
 // Affichage des produits sur la page d'acceuil
 
 function addProducts(kanaps){
-  //const _id = kanaps[0]._id
-  // const imageUrl = kanaps[0].imageUrl
-  //const altTxt = kanaps[0].altTxt
-  //const name = kanaps[0].name
-  //const description = kanaps[0].description
-
   kanaps.forEach (kanap =>{
    const {_id, imageUrl, altTxt, name, description } = kanap
    const anchor = makeAnchor(_id)
