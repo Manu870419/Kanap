@@ -13,6 +13,7 @@ fetch("http://localhost:3000/api/products")
 // Affichage des produits sur la page d'acceuil
 
 function addProducts(kanaps){
+
   kanaps.forEach (kanap =>{
    const {_id, imageUrl, altTxt, name, description } = kanap
    const anchor = makeAnchor(_id)
