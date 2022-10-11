@@ -1,4 +1,4 @@
-import {makeAnchor, makeImage, makeH3, makeParagraph, appendElementsToArticle, appendItems} from "./index_function.js"
+import {makeAnchor, makeImage, makeH3, makeParagraph, appendElementsToArticle, appendItems} from "./script_function.js"
 
 // Je crée un panier vide s'il n'existe pas dans le localstorage
 if (!localStorage.getItem('cart')) {
