@@ -76,7 +76,7 @@ function handleClick() {
  const quantity = document.querySelector("#quantity").value
 
  // Si commande invalide
- if(isOrderInValid(color, quantity)) return;
+ if(isOrderInFilled(color, quantity)) return;
 
  // Enregistrer la commande
  saveOrder(color, quantity)
@@ -85,7 +85,7 @@ function handleClick() {
  redirectToCart()
 };
 
-function isOrderInValid(color, quantity) {
+function isOrderInFilled(color, quantity) {
   if (color == null || color === "" ||quantity == null || quantity == 0) {
    alert("Veuillez sélectionner une couleur et une quantité")
     return true;

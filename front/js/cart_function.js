@@ -11,13 +11,6 @@ function deleteDataFromCache(item){
     localStorage.removeItem(key)
 };
 
-// Enregistrer de nouvelles données dans le cache
-function saveNewDataToCache(item){  
-  const dataToSave = JSON.stringify(item)
-  const key = `${item.id}-${item.color}`
-  localStorage.setItem(key, dataToSave)
-};
-
 // Faire une description du produit
 function makeDescription(item) {
     const description = document.createElement("div")

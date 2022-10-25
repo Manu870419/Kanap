@@ -1,10 +1,18 @@
 import {deleteArticleFromPage, deleteDataFromCache, 
     makeDescription, displayArticle, makeArticle, makeImageDiv, isFormFilled, getIdsFromCache} from "./cart_function.js"
 
- let cart = JSON.parse(localStorage.getItem('cart'));
+    let cart = JSON.parse(localStorage.getItem('cart'));
+   
+fetch('http://localhost:3000/api/products/')
+ .then((response) => response.json())
+ .then((product) => {
+ let price = 0;
+ price = product.price;
+ return price;
+ });
 
  cart.forEach((item) => displayItem(item))
- 
+
  getIdsFromCache()
 
 const orderButton = document.querySelector("#order")
@@ -32,7 +40,7 @@ function displayTotalQuantity() {
 // Prix totale de l'affichage 
 function displayTotalPrice(){
     const totalPrice = document.querySelector("#totalPrice")
-    const total = cart.reduce((total, item) => total + item.price * item.quantity, 0)
+    const total = cart.reduce((total, item) => total + product.price * item.quantity, 0)
     totalPrice.textContent = total
 };
 
