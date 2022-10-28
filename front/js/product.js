@@ -94,12 +94,12 @@ function isOrderInFilled(color, quantity) {
 
 function saveOrder(color, quantity) {
   const cart= JSON.parse(localStorage.getItem('cart'));
-
   const newProduct = {
     id: id,
     color: color,
     quantity: Number(quantity),
     altTxt: altText,
+    imageUrl: imgUrl,
     name: articleName
   };
  //Si le produit est déjà dans le panier (même id et même couleur)
@@ -113,7 +113,7 @@ function saveOrder(color, quantity) {
   cart.push(newProduct)
  }
 
-  localStorage.setItem(cart, JSON.stringify(cart))
+  localStorage.setItem('cart', JSON.stringify(cart))
 };
 
 function redirectToCart() {

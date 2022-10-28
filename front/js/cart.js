@@ -1,19 +1,23 @@
 import {deleteArticleFromPage, deleteDataFromCache, 
     makeDescription, displayArticle, makeArticle, makeImageDiv, isFormFilled, getIdsFromCache} from "./cart_function.js"
 
-    let cart = JSON.parse(localStorage.getItem('cart'));
+let localStorageCart = JSON.parse(localStorage.getItem('cart'));
+let cartWithPrices;
    
-fetch('http://localhost:3000/api/products/')
- .then((response) => response.json())
- .then((product) => {
- let price = 0;
- price = product.price;
- return price;
- });
+if ( localStorageCart === null || localStorageCart.lenght === 0 ) {
+    totalQuantity.textContent = '0';
+    totalPrice.textContent = '0'; 
+};
 
- cart.forEach((item) => displayItem(item))
-
- getIdsFromCache()
+Promise.all(getIdsFromCache().map( id => fetch(`http://localhost:3000/api/products/${id}`)))
+  .then(responses => Promise.all(responses.map(response => response.json())))
+  .then(products => {
+    cartWithPrices = localStorageCart.map(cartProduct => ({
+        ...cartProduct, 
+        price: products.find(product => cartProduct.id === product._id).price
+    }));
+    cartWithPrices.forEach((item) => displayItem(item));
+});
 
 const orderButton = document.querySelector("#order")
 orderButton.addEventListener("click", (e) => submitForm(e))
@@ -33,14 +37,14 @@ function displayItem(item) {
 // Quantité totale de l'affichage
 function displayTotalQuantity() {
     const totalQuantity = document.querySelector("#totalQuantity")
-    const total = cart.reduce((total, item) => total + item.quantity, 0)
+    const total = cartWithPrices.reduce((total, item) => total + item.quantity, 0)
     totalQuantity.textContent = total
 };
 
 // Prix totale de l'affichage 
 function displayTotalPrice(){
     const totalPrice = document.querySelector("#totalPrice")
-    const total = cart.reduce((total, item) => total + product.price * item.quantity, 0)
+    const total = cartWithPrices.reduce((total, item) => total + item.price * item.quantity, 0)
     totalPrice.textContent = total
 };
 
@@ -57,7 +61,7 @@ function makeCartContent(item){
     return cardItemContent
 }
 // faire le réglage du panier
-function makeSettings (item){
+function makeSettings (item){2
     const settings = document.createElement("div")
     settings.classList.add("cart__item__content__settings")
 
@@ -79,8 +83,8 @@ function addDeleteToSettings(settings, item) {
 
 // Supprimer l'élément
  function deleteItem(item){
-    cart = cart.filter(product => product.id !== item.id || product.color !== item.color);
-    localStorage.setItem('cart', JSON.stringify('cart'))
+    localStorageCart = localStorageCart.filter(product => product.id !== item.id || product.color !== item.color);
+    localStorage.setItem('cart', JSON.stringify(localStorageCart))
     displayTotalPrice()
     displayTotalQuantity()
     deleteDataFromCache(item)
@@ -109,21 +113,20 @@ function addQuantityToSettings(settings, item){
 
 // Mettre à jour le prix et la quantité
 function updatePriceAndQuantity(newValue, item) {
-    cart.map(product => {
+    localStorageCart.map(product => {
+       delete product['price'];
         if (product.id === item.id && product.color === item.color) {
             return product.quantity = Number(newValue)
         };
     });
-    displayTotalQuantity()
-    displayTotalPrice()
-    
-    localStorage.setItem('cart', JSON.stringify(cart))
+    displayTotalQuantity(newValue);
+    displayTotalPrice(newValue);
 };
 
 // Formulaire
 function submitForm(e){
     e.preventDefault()
-    if(cart.length === 0) {
+    if(localStorageCart.length === 0) {
         alert("Veuillez sélectionner les articles à acheter")
         return
     } 
