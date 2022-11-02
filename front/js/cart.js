@@ -1,6 +1,10 @@
 import {deleteArticleFromPage, deleteDataFromCache, 
     makeDescription, displayArticle, makeArticle, makeImageDiv, isFormFilled, getIdsFromCache} from "./cart_function.js"
 
+if (!localStorage.getItem('cart')) {
+        localStorage.setItem('cart', JSON.stringify([]))
+};
+
 let localStorageCart = JSON.parse(localStorage.getItem('cart'));
 let cartWithPrices;
    
@@ -61,7 +65,7 @@ function makeCartContent(item){
     return cardItemContent
 }
 // faire le réglage du panier
-function makeSettings (item){2
+function makeSettings (item){
     const settings = document.createElement("div")
     settings.classList.add("cart__item__content__settings")
 
@@ -102,7 +106,7 @@ function addQuantityToSettings(settings, item){
     input.type = "number"
     input.classList.add("itemQuantity")
     input.name = "itemQuantity"
-    input.min = "1"
+    input.min = "1"  
     input.max = "100"
     input.value = item.quantity
     input.addEventListener("input", () => updatePriceAndQuantity(item, input.value))
@@ -119,8 +123,8 @@ function updatePriceAndQuantity(newValue, item) {
             return product.quantity = Number(newValue)
         };
     });
-    displayTotalQuantity(newValue);
-    displayTotalPrice(newValue);
+    displayTotalQuantity();
+    displayTotalPrice();
 };
 
 // Formulaire
