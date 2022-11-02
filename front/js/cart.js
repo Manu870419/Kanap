@@ -2,9 +2,9 @@ import {deleteArticleFromPage, deleteDataFromCache,
     makeDescription, displayArticle, makeArticle, makeImageDiv, isFormFilled, getIdsFromCache} from "./cart_function.js"
 
 if (!localStorage.getItem('cart')) {
-        localStorage.setItem('cart', JSON.stringify([]))
+    localStorage.setItem('cart', JSON.stringify([]))
 };
-
+      
 let localStorageCart = JSON.parse(localStorage.getItem('cart'));
 let cartWithPrices;
    
@@ -89,6 +89,9 @@ function addDeleteToSettings(settings, item) {
  function deleteItem(item){
     localStorageCart = localStorageCart.filter(product => product.id !== item.id || product.color !== item.color);
     localStorage.setItem('cart', JSON.stringify(localStorageCart))
+
+    cartWithPrices = cartWithPrices.filter(product => product.id !== item.id || product.color !== item.color);
+
     displayTotalPrice()
     displayTotalQuantity()
     deleteDataFromCache(item)
@@ -116,13 +119,23 @@ function addQuantityToSettings(settings, item){
 }
 
 // Mettre à jour le prix et la quantité
-function updatePriceAndQuantity(newValue, item) {
-    localStorageCart.map(product => {
-       delete product['price'];
+function updatePriceAndQuantity(item, newValue) {
+    localStorageCart = localStorageCart.map(product => {
         if (product.id === item.id && product.color === item.color) {
-            return product.quantity = Number(newValue)
+            product.quantity = Number(newValue)
         };
+        return product;
     });
+    
+    localStorage.setItem('cart', JSON.stringify(localStorageCart));
+
+    cartWithPrices = cartWithPrices.map(product => {
+        if (product.id === item.id && product.color === item.color) {
+            product.quantity = Number(newValue)
+        };
+        return product;
+    });
+
     displayTotalQuantity();
     displayTotalPrice();
 };
