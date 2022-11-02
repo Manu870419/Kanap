@@ -1,3 +1,8 @@
+
+if (!localStorage.getItem('cart')) {
+  localStorage.setItem('cart', JSON.stringify([]))
+};
+
 // Récupération de l'id depuis l'url
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString)
@@ -75,6 +80,10 @@ function handleClick() {
  const color = document.querySelector("#colors").value
  const quantity = document.querySelector("#quantity").value
 
+ if(Number(quantity) < 0 || Number(quantity) > 100){
+  alert("Veuillez sélectionner une quantité entre 1 et 100")
+ }else{
+
  // Si commande invalide
  if(isOrderInFilled(color, quantity)) return;
 
@@ -83,6 +92,7 @@ function handleClick() {
 
  // Rediriger vers le panier
  redirectToCart()
+ }
 };
 
 function isOrderInFilled(color, quantity) {
@@ -103,7 +113,7 @@ function saveOrder(color, quantity) {
     name: articleName
   };
  //Si le produit est déjà dans le panier (même id et même couleur)
- if (cart.some(product => product.id === newProduct.id && product.color === newProduct)){
+ if (cart.some(product => product.id === newProduct.id && product.color === newProduct.color)){
   cart.map(product => {
     if (product.id === newProduct.id && product.color === newProduct.color) {
       return product.quantity += newProduct.quantity
