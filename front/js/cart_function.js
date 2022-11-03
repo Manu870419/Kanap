@@ -58,22 +58,43 @@ function makeImageDiv(item) {
 
 // Si le formulaire est vide
 function isFormFilled(){
-    const form = document.querySelector(".cart__order__form")
-    const inputs= form.querySelectorAll("input")
-    inputs.forEach((input) => {
-        if(input.value === ""){
-            alert("Veuillez remplir tous les champs")
-            return true
-        }
-        return false
-    })
-    const email = document.querySelector("#email").value
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (regex.test(email) === false){
-        alert("Veuillez saisir une adresse email valide")
-        return true
-    }
-    return false
+  // On vérifie que l'utilisateur rentre des informations conformes au formulaire de contact
+ const regexName = /^(?=.{1,50}$)[a-z\u00C0-\u00FF]+(?:['-_.\s][a-z\u00C0-\u00FF]+)*$/i;
+ const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+ const regexLocation = /^[a-zA-Z0-9\u00C0-\u00FF\s,. '-]{3,}$/;
+
+ //Prépare l'obj contact pour la requête POST
+ let contact ={
+    firstName: document.querySelector("#firstName").value,
+    lastName: document.querySelector("#lastName").value,
+    address: document.querySelector("#address").value,
+    city: document.querySelector("#city").value,
+    email: document.querySelector("#email").value
+ };
+  // Si le formulaire est vide ou incorrectement rempli 
+ if (regexName.test(contact.firstName) === false){
+ // Avertir l'utilisateur qu'il n'a pas (ou mal) rempli les champs d'informations  
+    alert("Veuillez saisir un prénom valide")
+    return true
+ };
+ if (regexName.test(contact.lastName) === false){
+    alert("Veuillez saisir un nom valide")
+    return true
+ };
+ if (regexLocation.test(contact.address) === false){
+    alert("Veuillez saisir une adresse valide")
+    return true
+ };
+ if (regexLocation.test(contact.city) === false){
+    alert("Veuillez saisir une ville valide")
+    return true
+ };
+ if (regexEmail.test(contact.email) === false){
+    alert("Veuillez saisir une adresse email valide")
+    return true
+ };
+  return false  
+    
 };
 
 
