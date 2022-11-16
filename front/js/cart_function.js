@@ -106,5 +106,5 @@ function getIdsFromCache() {
 
 export {
     deleteArticleFromPage, deleteDataFromCache,
-    makeDescription, displayArticle, displayTotalQuantity, displayTotalPrice, makeArticle, makeImageDiv, updatePriceAndQuantity, isFormFilled, getIdsFromCache
+    makeDescription, displayArticle, makeArticle, makeImageDiv, isFormFilled, getIdsFromCache
 };
