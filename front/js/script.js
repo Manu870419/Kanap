@@ -1,14 +1,12 @@
 import {makeAnchor, makeImage, makeH3, makeParagraph, appendElementsToArticle, appendItems} from "./script_function.js"
+import{diskStorage, diskStorageCart} from "./localStorage_function.js"
 
 // Je crée un panier vide s'il n'existe pas dans le localstorage
-if (!localStorage.getItem('cart')) {
-  localStorage.setItem('cart', JSON.stringify([]))
-};
+diskStorage();
+
 let localStorageCart = JSON.parse(localStorage.getItem('cart'));
-if ( localStorageCart === null || localStorageCart.lenght === 0 ) {
-  totalQuantity.textContent = '0';
-  totalPrice.textContent = '0'; 
-};
+
+diskStorageCart();
 
 // Récupération données de l'API.
 fetch("http://localhost:3000/api/products")
