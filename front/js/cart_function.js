@@ -34,21 +34,6 @@ function displayArticle(article) {
     document.querySelector("#cart__items").appendChild(article)
 };
 
-
-// Quantité totale de l'affichage
-function displayTotalQuantity() {
-    const totalQuantity = document.querySelector("#totalQuantity")
-    const total = cartWithPrices.reduce((total, item) => total + item.quantity, 0)
-    totalQuantity.textContent = total
-};
-
-// Prix totale de l'affichage 
-function displayTotalPrice() {
-    const totalPrice = document.querySelector("#totalPrice")
-    const total = cartWithPrices.reduce((total, item) => total + item.price * item.quantity, 0)
-    totalPrice.textContent = total
-};
-
 // Faire un article
 function makeArticle(item) {
     const article = document.createElement("article")
@@ -68,28 +53,6 @@ function makeImageDiv(item) {
     image.alt = item.altTxt
     div.appendChild(image)
     return div
-};
-
-// Mettre à jour le prix et la quantité
-function updatePriceAndQuantity(item, newValue) {
-    localStorageCart = localStorageCart.map(product => {
-        if (product.id === item.id && product.color === item.color) {
-            product.quantity = Number(newValue)
-        };
-        return product;
-    });
-
-    localStorage.setItem('cart', JSON.stringify(localStorageCart));
-
-    cartWithPrices = cartWithPrices.map(product => {
-        if (product.id === item.id && product.color === item.color) {
-            product.quantity = Number(newValue)
-        };
-        return product;
-    });
-
-    displayTotalQuantity();
-    displayTotalPrice();
 };
 
 // Si le formulaire est vide

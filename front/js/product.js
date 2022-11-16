@@ -8,11 +8,10 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString)
 const id = urlParams.get('id')
 
-  let itemPrices,
-  let imgUrl, altText, articleName
+  let itemPrices,imgUrl, altText, articleName
   
 // Récupération de données par rapport à l'id récupéré dans l'url du produit
-fetch ("http://localhost:3000/api/products/${id}")
+fetch (`http://localhost:3000/api/products/${id}`)
   .then((response) => response.json())
   .then((res) => handleData(res))
   
@@ -47,7 +46,16 @@ function handleClick() {
     if (isOrderInFilled(color, quantity)) return;
 
     // Enregistrer la commande
-    saveOrder(color, quantity)
+    const newProduct = {
+      id: id,
+      color: color,
+      quantity: Number(quantity),
+      altTxt: altText,
+      imageUrl: imgUrl,
+      name: articleName
+    
+    };
+    saveOrder(newProduct)
 
     // Rediriger vers le panier
     redirectToCart()

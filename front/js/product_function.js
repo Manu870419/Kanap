@@ -46,16 +46,11 @@ function isOrderInFilled(color, quantity) {
     };
 };
 
-function saveOrder(color, quantity) {
+
+
+function saveOrder(newProduct) {
     const cart = JSON.parse(localStorage.getItem('cart'));
-    const newProduct = {
-        id: id,
-        color: color,
-        quantity: Number(quantity),
-        altTxt: altText,
-        imageUrl: imgUrl,
-        name: articleName
-    };
+   
     //Si le produit est déjà dans le panier (même id et même couleur)
     if (cart.some(product => product.id === newProduct.id && product.color === newProduct.color)) {
         cart.map(product => {

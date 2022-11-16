@@ -1,6 +1,6 @@
 import {
     deleteArticleFromPage, deleteDataFromCache,
-    makeDescription, displayArticle, displayTotalQuantity, displayTotalPrice, makeArticle, makeImageDiv, isFormFilled, getIdsFromCache
+    makeDescription, displayArticle, makeArticle, makeImageDiv, isFormFilled, getIdsFromCache
 } from "./cart_function.js";
 import { diskStorage, diskStorageCart } from "./localStorage_function.js";
 
@@ -48,6 +48,21 @@ function makeCartContent(item) {
     cardItemContent.appendChild(settings)
     return cardItemContent
 }
+
+// Quantité totale de l'affichage
+function displayTotalQuantity() {
+    const totalQuantity = document.querySelector("#totalQuantity")
+    const total = cartWithPrices.reduce((total, item) => total + item.quantity, 0)
+    totalQuantity.textContent = total
+};
+
+// Prix totale de l'affichage 
+function displayTotalPrice() {
+    const totalPrice = document.querySelector("#totalPrice")
+    const total = cartWithPrices.reduce((total, item) => total + item.price * item.quantity, 0)
+    totalPrice.textContent = total
+};
+
 // faire le réglage du panier
 function makeSettings(item) {
     const settings = document.createElement("div")
@@ -101,6 +116,28 @@ function addQuantityToSettings(settings, item) {
     quantity.appendChild(input)
     settings.appendChild(quantity)
 }
+
+// Mettre à jour le prix et la quantité
+function updatePriceAndQuantity(item, newValue) {
+    localStorageCart = localStorageCart.map(product => {
+        if (product.id === item.id && product.color === item.color) {
+            product.quantity = Number(newValue)
+        };
+        return product;
+    });
+
+    localStorage.setItem('cart', JSON.stringify(localStorageCart));
+
+    cartWithPrices = cartWithPrices.map(product => {
+        if (product.id === item.id && product.color === item.color) {
+            product.quantity = Number(newValue)
+        };
+        return product;
+    });
+
+    displayTotalQuantity();
+    displayTotalPrice();
+};
 
 // Formulaire
 function submitForm(e) {
