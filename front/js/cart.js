@@ -141,7 +141,7 @@ function updatePriceAndQuantity(item, newValue) {
 
 // Formulaire
 function submitForm(e) {
-    e.preventDefault()
+    e.preventDefault();
     if (localStorageCart.length === 0) {
         alert("Veuillez sélectionner les articles à acheter")
         return

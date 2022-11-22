@@ -56,46 +56,47 @@ function makeImageDiv(item) {
 };
 
 // Si le formulaire est vide
-function isFormFilled() {
+
+function isFormFilled(e) {
     // On vérifie que l'utilisateur rentre des informations conformes au formulaire de contact
     const regexName = /^(?=.{1,50}$)[a-z\u00C0-\u00FF]+(?:['-_.\s][a-z\u00C0-\u00FF]+)*$/i;
     const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const regexLocation = /^[a-zA-Z0-9\u00C0-\u00FF\s,. '-]{3,}$/;
 
     //Prépare l'obj contact pour la requête POST
-    let contact = {
+  let contact = {
         firstName: document.querySelector("#firstName").value,
         lastName: document.querySelector("#lastName").value,
         address: document.querySelector("#address").value,
         city: document.querySelector("#city").value,
         email: document.querySelector("#email").value
+        
     };
     // Si le formulaire est vide ou incorrectement rempli 
     if (regexName.test(contact.firstName) === false) {
         // Avertir l'utilisateur qu'il n'a pas (ou mal) rempli les champs d'informations  
-        alert("Veuillez saisir un prénom valide")
-        return true
+        const p = document.getElementById('firstNameErrorMsg').innerText = "Veuillez saisir un prénom valide";
+        return true;
     };
     if (regexName.test(contact.lastName) === false) {
-        alert("Veuillez saisir un nom valide")
+        const p = document.getElementById('lastNameErrorMsg').innerText = "Veuillez saisir un nom valide";
         return true
     };
     if (regexLocation.test(contact.address) === false) {
-        alert("Veuillez saisir une adresse valide")
+        const p = document.getElementById('addressErrorMsg').innerText = "Veuillez saisir une adresse valide";
         return true
     };
     if (regexLocation.test(contact.city) === false) {
-        alert("Veuillez saisir une ville valide")
+        const p = document.getElementById('cityErrorMsg').innerText = "Veuillez saisir une ville valide";
         return true
     };
     if (regexEmail.test(contact.email) === false) {
-        alert("Veuillez saisir une adresse email valide")
+        const p = document.getElementById('emailErrorMsg').innerText = "Veuillez saisir une adresse mail valide";
         return true
     };
     return false
-
+   
 };
-
 
 // Obtenir des identifiants à partir du cache
 function getIdsFromCache() {
